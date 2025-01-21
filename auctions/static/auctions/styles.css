@@ -1,3 +1,18 @@
 body {
-    padding: 10px;
+  padding: 0 !important;
+}
+
+/* layout page*/
+.slogen p {
+  font-size: 90px;
+  text-align: center;
+  margin-top: 20px;
+}
+.slogen {
+  margin-top: 10%;
+}
+
+/* index page*/
+h2 {
+  text-align: center;
 }
