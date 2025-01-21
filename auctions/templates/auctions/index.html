@@ -1,7 +1,18 @@
-{% extends "auctions/layout.html" %}
-
-{% block body %}
-    <h2>Active Listings</h2>
-
-    TODO
-{% endblock %}
+{% extends "auctions/layout.html" %} {% block body %}
+<h2>Active Listings</h2>
+{% if products %} {% for product in products}
+<div class="card" style="width: 18rem">
+  <img
+    src="{{product.image_url}}"
+    class="card-img-top"
+    alt="{{product.name}}"
+  />
+  <div class="card-body">
+    <h5 class="card-title">{{product.name}}</h5>
+    <p class="card-text">{{product.description}}</p>
+    <a href="#" class="btn btn-primary">Bid Now</a>
+    <a href="#" class="btn btn-primary">Add to Watchlist</a>
+    <a href="#">Comments</a>
+  </div>
+</div>
+{% endfor %} TODO {% endblock %}
