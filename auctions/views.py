@@ -1,10 +1,10 @@
 from django.contrib.auth import authenticate, login, logout
 from django.db import IntegrityError
 from django.http import HttpResponse, HttpResponseRedirect
-from django.shortcuts import render
+from django.shortcuts import render, get_list_or_404, redirect
 from django.urls import reverse
 
-from .models import User,Product
+from .models import User,Product,Comment
 
 
 def index(request):
@@ -64,3 +64,7 @@ def register(request):
         return HttpResponseRedirect(reverse("index"))
     else:
         return render(request, "auctions/register.html")
+
+def add_listing(request):
+    return render(request, "auctions/add_listing.html")
+    

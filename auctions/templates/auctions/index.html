@@ -1,6 +1,13 @@
 {% extends "auctions/layout.html" %} {% block body %}
+<!-- Show the slogan content if the user is not logged in -->
+{% if not user.is_authenticated %}
+<div class="slogen">
+  <p>Uncover Hidden Treasures, Bid to Win.</p>
+  <p>Bids That Bring You Deals.</p>
+</div>
+{% else %}
 <h2>Active Listings</h2>
-{% if products %} {% for product in products}
+{% if products %} {% for product in products %}
 <div class="card" style="width: 18rem">
   <img
     src="{{product.image_url}}"
@@ -12,7 +19,9 @@
     <p class="card-text">{{product.description}}</p>
     <a href="#" class="btn btn-primary">Bid Now</a>
     <a href="#" class="btn btn-primary">Add to Watchlist</a>
-    <a href="#">Comments</a>
+    <a href="{% url 'comments' product.id %}">Comments</a>
   </div>
 </div>
-{% endfor %} TODO {% endblock %}
+{% endfor %} {% else %}
+<p>No Active Listing Available</p>
+{% endif %} {% endif %} {% endblock %}

@@ -1,0 +1,41 @@
+{% extends "auctions/layout.html" %} {% block body %}
+<h2>Add Listing</h2>
+<form method="post" action="{% url 'add_listing' %}">
+  {% csrf_token %}
+  <div class="form-group">
+    <label for="name">Product Name</label>
+    <input type="text" class="form-control" id="name" name="name" required />
+  </div>
+  <div class="form-group">
+    <label for="description">Description</label>
+    <textarea
+      class="form-control"
+      id="description"
+      name="description"
+      rows="3"
+      required
+    ></textarea>
+  </div>
+  <div class="form-group">
+    <label for="starting_bid">Starting Bid</label>
+    <input
+      type="number"
+      step="0.01"
+      class="form-control"
+      id="starting_bid"
+      name="starting_bid"
+      required
+    />
+  </div>
+  <div class="form-group">
+    <label for="image_url">Image URL</label>
+    <input type="url" class="form-control" id="image_url" name="image_url" />
+  </div>
+  <div class="form-group">
+    <label for="category">Category</label>
+    <input type="text" class="form-control" id="category" name="category" />
+  </div>
+  <button type="submit" class="btn btn-primary mt-3">Add Listing</button>
+</form>
+
+{% endblock %}
