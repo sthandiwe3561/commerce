@@ -32,8 +32,13 @@
     <input type="url" class="form-control" id="image_url" name="image_url" />
   </div>
   <div class="form-group">
-    <label for="category">Category</label>
-    <input type="text" class="form-control" id="category" name="category" />
+    <label for="category">Product Category</label>
+    <select class="form-control" id="category" name="category" required>
+      <option value="" disabled selected>Select a category</option>
+      {% for category in categories %}
+      <option value="{{ category }}">{{ category }}</option>
+      {% endfor %}
+    </select>
   </div>
   <button type="submit" class="btn btn-primary mt-3">Add Listing</button>
 </form>

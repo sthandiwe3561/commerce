@@ -42,3 +42,4 @@ def comments(request, product_id):
     })
  
     path("product/<int:product_id>/comments/", views.comments, name="comments"),
+    <a href="{% url 'comments' product.id %}">Comments</a>

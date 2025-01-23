@@ -1,0 +1,44 @@
+{% extends "auctions/layout.html" %} {% block body %}
+<div class="cart-container">
+  <!-- First Column: 4 Rows of Images -->
+  <div class="first-column">
+    <img src="{{product.image_url}}" alt="{{product.name}}" />
+    <img src="{{product.image_url}}" alt="{{product.name}}" />
+    <img src="{{product.image_url}}" alt="{{product.name}}" />
+  </div>
+
+  <!-- Second Column: Single Image -->
+  <div class="second-column">
+    <img src="{{product.image_url}}" alt="{{product.name}}" />
+  </div>
+
+  <!-- Third Column: Text -->
+  <div class="third-column">
+    <h5>{{product.name}}</h5>
+    <div class="content">
+      <p>R{{product.price}}</p>
+    </div>
+    <a href="#" class="btn btn-primary">Bid Now</a>
+    <a href="#" class="btn btn-primary">Add to Watchlist</a>
+  </div>
+</div>
+
+<!-- Comment Form (Visible only for logged-in users) -->
+<h2>Comments</h2>
+<div class="comment-section">
+  {% if user.is_authenticated %}
+  <form method="POST" action="{% url 'comments' product.id %}">
+    {% csrf_token %}
+    <textarea
+      name="content"
+      rows="2"
+      placeholder="Add a comment..."
+      required
+    ></textarea>
+    <button type="submit">Submit</button>
+  </form>
+  {% else %}
+  <p>You must be logged in to comment.</p>
+  {% endif %}
+</div>
+{% endblock %}

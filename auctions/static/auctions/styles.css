@@ -16,3 +16,92 @@ body {
 h2 {
   text-align: center;
 }
+
+/* view_listing page */
+.cart-container {
+  margin-left: 20px;
+  margin-top: 30px;
+  display: grid;
+  grid-template-columns: 1fr 2fr 2fr; /* First column 1fr, Second and Third 2fr */
+  gap: 20px; /* Space between columns */
+  height: auto; /* Full viewport height for example */
+}
+
+.first-column {
+  display: grid;
+  grid-template-rows: repeat(3, 1fr); /* 4 equal rows */
+  gap: 10px; /* Space between images */
+  height: 60%;
+}
+
+.first-column img {
+  width: 70%; /* Make images fit the column */
+  height: 90%;
+  background-color: white;
+}
+
+.second-column img {
+  width: 80%; /* Make the image fit the column */
+  height: 95%; /* Full height of 4 rows */
+  object-fit: cover; /* Ensure the image covers the space without distortion */
+  background-color: white;
+}
+
+.third-column {
+  display: flex;
+  flex-direction: column;
+  text-align: left; /* Align text to the left */
+  padding: 10px;
+}
+
+.third-column h5 {
+  font-family: "Libre Baskerville", serif;
+  font-weight: 700;
+  margin-bottom: 10px;
+  margin-top: 60px;
+  font-weight: 900;
+  font-size: 60px;
+}
+.content {
+  margin-left: 10px;
+}
+
+.comment-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 20px auto;
+  width: 50%; /* Adjust width as needed */
+  text-align: center; /* Center align the text */
+}
+
+.comment-section form {
+  width: 100%; /* Make the form take full width of its container */
+  margin-bottom: 20px; /* Add spacing between form and comments */
+}
+
+.comment-section textarea {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.comment-section button {
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.comment-section ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.comment-section li {
+  margin-bottom: 10px;
+}
