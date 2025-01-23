@@ -1,0 +1,17 @@
+{% extends "auctions/layout.html" %} {% block body %}
+<form method="POST" action="{% url 'bid' product.id %}">
+  {% csrf_token %}
+  <div class="form-group">
+    <label for="bid_amount">Enter your bid:</label>
+    <input
+      type="number"
+      name="bid_amount"
+      id="bid_amount"
+      min="{{ product.current_price + 1 }}"
+      required
+    />
+    <button type="submit" class="btn btn-primary">Place Bid</button>
+  </div>
+</form>
+
+{% endblock %}

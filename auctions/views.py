@@ -78,7 +78,8 @@ def add_listing(request):
         Product.objects.create(
             name=name,
             description=description,
-            price=starting_bid,
+            starting_price=starting_bid,
+            current_price =starting_bid,
             image_url=image_url,
             category=category,
             user=request.user  # Associate the product with the logged-in user
@@ -117,3 +118,6 @@ def comments(request, product_id):
         "product": product,
         "comments": comments,
     })
+
+def bid(request,product_id):
+    pass
