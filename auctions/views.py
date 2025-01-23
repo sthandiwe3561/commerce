@@ -2,9 +2,10 @@ from django.contrib.auth import authenticate, login, logout
 from django.db import IntegrityError
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404,redirect
+from django.contrib import messages
 from django.urls import reverse
 
-from .models import User,Product,Comment
+from .models import User,Product,Comment,Bid
 
 
 def index(request):
@@ -120,4 +121,59 @@ def comments(request, product_id):
     })
 
 def bid(request,product_id):
-    pass
+     product = get_object_or_404(Product, id=product_id)
+     
+     if request.method == "POST":
+         bid_amount = float(request.POST["bid_amount"])
+
+         #check if the bid amount is higher
+         if bid_amount > product.current_price:
+             #save the changes
+             new_bid = Bid.objects.create(
+                 user = request.user,
+                 product = product,
+                 amount = bid_amount
+             )
+             new_bid.save()
+
+             #update the current_price in product
+             product.current_price = bid_amount
+             product.save()
+             messages.success(request, "Your bid has been placed successfully!")
+         else:
+             messages.error(request, "Your bid must be higher than the current price!")  
+             
+
+     return redirect("view_listing", product_id=product.id)
+
+def delete_bid(request, product_id):
+    # Get the product
+    product = get_object_or_404(Product, id=product_id)
+
+    # Check if the user has placed a bid on the product
+    user_bid = Bid.objects.filter(user=request.user, product=product).first()
+
+    if user_bid:
+        deleted_bid_amount = user_bid.amount
+
+        # Delete the bid
+        user_bid.delete()
+        # Check if the deleted bid was the current highest bid
+        highest_bid = Bid.objects.filter(product=product).order_by('-amount').first()
+
+        if highest_bid:
+            # Update the product's current price to the next highest bid
+            product.current_price = highest_bid.amount
+        else:
+            # If no bids remain, reset the current price to the starting price
+            product.current_price = product.starting_price
+
+        product.save()
+
+        # Show a success message
+        messages.success(request, f"Your bid of R{deleted_bid_amount} has been deleted. The current price is now R{product.current_price}.")
+    else:
+        messages.error(request, "You don't have any bids to delete for this product.")
+
+    # Redirect back to the product page
+    return redirect('view_listing', product_id=product_id)

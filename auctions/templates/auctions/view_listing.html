@@ -16,29 +16,61 @@
   <div class="third-column">
     <h5>{{product.name}}</h5>
     <div class="content">
-      <p>R{{product.price}}</p>
+      <p>R{{product.current_price}}</p>
     </div>
-    <a href="{% url 'bid' product.id}" class="btn btn-primary">Bid Now</a>
+    <!-- Bid Form Section -->
+    {% if user.is_authenticated %}
+    <form method="POST" action="{% url 'bid' product.id %}">
+      {% csrf_token %}
+      <label for="bid_amount">Place Your Bid:</label>
+      <input
+        type="number"
+        id="bid_amount"
+        name="bid_amount"
+        step="0.01"
+        required
+        placeholder="Enter your bid"
+      />
+      <button type="submit">Place Bid</button>
+    </form>
+    <span>
+      <form method="POST" action="{% url 'delete_bid' product.id %}">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-danger">Delete My Bid</button>
+      </form>
+    </span>
+    {% else %}
+    <p>You must be logged in to place a bid.</p>
+    {% endif %}
     <a href="#" class="btn btn-primary">Add to Watchlist</a>
+    {% if messages %}
+    <ul>
+      {% for message in messages %}
+      <li class="{% if message.tags %}{{ message.tags }}{% endif %}">
+        {{ message }}
+      </li>
+      {% endfor %}
+    </ul>
+    {% endif %}
   </div>
-</div>
 
-<!-- Comment Form (Visible only for logged-in users) -->
-<h2>Comments</h2>
-<div class="comment-section">
-  {% if user.is_authenticated %}
-  <form method="POST" action="{% url 'comments' product.id %}">
-    {% csrf_token %}
-    <textarea
-      name="content"
-      rows="2"
-      placeholder="Add a comment..."
-      required
-    ></textarea>
-    <button type="submit">Submit</button>
-  </form>
-  {% else %}
-  <p>You must be logged in to comment.</p>
-  {% endif %}
+  <!-- Comment Form (Visible only for logged-in users) -->
+  <h2>Comments</h2>
+  <div class="comment-section">
+    {% if user.is_authenticated %}
+    <form method="POST" action="{% url 'comments' product.id %}">
+      {% csrf_token %}
+      <textarea
+        name="content"
+        rows="2"
+        placeholder="Add a comment..."
+        required
+      ></textarea>
+      <button type="submit">Submit</button>
+    </form>
+    {% else %}
+    <p>You must be logged in to comment.</p>
+    {% endif %}
+  </div>
+  {% endblock %}
 </div>
-{% endblock %}
