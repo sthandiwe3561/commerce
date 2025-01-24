@@ -1,0 +1,39 @@
+{% extends 'auctions/layout.html' %} {% block body %}
+<div class="container">
+  <h1>Your Listings</h1>
+
+  {% if listings %}
+  <p>Manage and track your auction listings below:</p>
+  <div class="listings-grid">
+    {% for listing in listings %}
+    <div class="listing-card">
+      <div class="image-container">
+        <img src="{{ listing.image_url }}" alt="{{ listing.title }}" />
+      </div>
+      <div class="listing-details">
+        <h2>{{ listing.title }}</h2>
+        <p class="description">{{ listing.description|truncatechars:100 }}</p>
+        <p class="price">Current Price: ${{ listing.current_price }}</p>
+        <p class="status">Status:</p>
+        <div class="actions">
+          {% if listing.is_active %}
+          <form action="#" method="post">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-close">Close Listing</button>
+          </form>
+          {% else %}
+          <span class="closed-msg">This listing is closed.</span>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+  {% else %}
+  <p>
+    You have no active listings.
+    <a href="{% url 'add_listing' %}">Create a new listing</a>.
+  </p>
+  {% endif %}
+</div>
+{% endblock %}

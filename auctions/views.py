@@ -184,13 +184,21 @@ def my_bids(request):
      # Add a status to each bid
     bids_with_status = []
     for bid in user_bids:
-        status = "Winning" if bid.amount == bid.product.current_price else "Outbid"
+        statuses = "Winning" if bid.amount == bid.product.current_price else "Outbid"
+        bid.status = statuses
+        bid.save()
         bids_with_status.append({
             'product': bid.product,
             'amount': bid.amount,
             'date_placed': bid.timestamp,
-            'status': status
+            'status': bid.status,
         })
     return render(request,"auctions/my_bids.html", {
        "bids_with_status" : bids_with_status
+    })
+
+def my_listings(request):
+    listings = Product.objects.filter(user=request.user)
+    return render(request,"auctions/my_listings.html", {
+        "listings":listings
     })

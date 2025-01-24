@@ -6,27 +6,36 @@
   <p>Bids That Bring You Deals.</p>
 </div>
 {% else %}
-<h2>Active Listings</h2>
-{% if products %} {% for product in products %}
-<div class="card" style="width: 18rem">
-  <img
-    src="{{product.image_url}}"
-    class="card-img-top"
-    alt="{{product.name}}"
-  />
-  <div class="card-body">
-    <h5 class="card-title">{{product.name}}</h5>
-    <p class="card-text">{{product.description}}</p>
-    <a href="#" class="btn btn-primary">Bid Now</a>
-    <a href="#" class="btn btn-primary">Add to Watchlist</a>
-    <a href="{% url 'view_listing' product.id %}" class="btn btn-primary"
-      >View Product</a
-    >
+<div class="index-container">
+  <h2>Active Listings</h2>
+  {% if products %}
+  <div class="index-grid">
+    {% for product in products %}
+    <div class="card">
+      <div class="image-container-index">
+        <img
+          src="{{product.image_url}}"
+          class="card-img-top"
+          alt="{{product.name}}"
+        />
+      </div>
+      <div class="card-body">
+        <h5 class="card-title">{{product.name}}</h5>
+        <p class="card-text">{{product.description}}</p>
+        <div class="button-group">
+          <a href="#" class="btn index-btn btn-primary">Bid Now</a>
+          <a href="#" class="btn index-btn btn-primary">Add to Watchlist</a>
+          <a
+            href="{% url 'view_listing' product.id %}"
+            class="btn index-btn btn-primary"
+            >View Product</a
+          >
+        </div>
+      </div>
+    </div>
+    {% endfor %}
   </div>
+  {% else %}
+  <p>No Active Listing Available</p>
 </div>
-{% endfor %} {% else %}
-<p>No Active Listing Available</p>
-{% endif %} {% endif %}
-<h1>comments</h1>
-<p>{{comments}}</p>
-{% endblock %}
+{% endif %} {% endif %} {% endblock %}
