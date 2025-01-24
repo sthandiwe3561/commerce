@@ -33,12 +33,7 @@
       />
       <button type="submit">Place Bid</button>
     </form>
-    <span>
-      <form method="POST" action="{% url 'delete_bid' product.id %}">
-        {% csrf_token %}
-        <button type="submit" class="btn btn-danger">Delete My Bid</button>
-      </form>
-    </span>
+
     {% else %}
     <p>You must be logged in to place a bid.</p>
     {% endif %}

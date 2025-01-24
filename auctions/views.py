@@ -176,4 +176,21 @@ def delete_bid(request, product_id):
         messages.error(request, "You don't have any bids to delete for this product.")
 
     # Redirect back to the product page
-    return redirect('view_listing', product_id=product_id)
+    return redirect('my_bids')
+
+def my_bids(request):
+    user_bids = Bid.objects.filter(user=request.user)
+
+     # Add a status to each bid
+    bids_with_status = []
+    for bid in user_bids:
+        status = "Winning" if bid.amount == bid.product.current_price else "Outbid"
+        bids_with_status.append({
+            'product': bid.product,
+            'amount': bid.amount,
+            'date_placed': bid.timestamp,
+            'status': status
+        })
+    return render(request,"auctions/my_bids.html", {
+       "bids_with_status" : bids_with_status
+    })

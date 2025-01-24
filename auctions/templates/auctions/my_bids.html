@@ -1,0 +1,55 @@
+{% extends 'auctions/layout.html' %} {% block body %}
+<div class="container">
+  <h1>Your Bids</h1>
+
+  {% if bids_with_status %}
+  <table class="bids-table">
+    <thead>
+      <tr>
+        <th>Product</th>
+        <th>Bid Amount</th>
+        <th>Date Placed</th>
+        <th>Status</th>
+        <th>Action</th>
+        <th>Delete</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for bid in bids_with_status %}
+      <tr>
+        <td>
+          <a href="{% url 'view_listing' bid.product.id %}">
+            {{ bid.product.name }}
+          </a>
+        </td>
+        <td>${{ bid.amount }}</td>
+        <td>{{ bid.date_placed|date:"M d, Y H:i" }}</td>
+        <td>
+          <span class="status {{ bid.status|lower }}">{{ bid.status }}</span>
+        </td>
+        <td>
+          <a
+            href="{% url 'view_listing' bid.product.id %}"
+            class="btn btn-view"
+          >
+            View
+          </a>
+        </td>
+        <td>
+          <form method="POST" action="{% url 'delete_bid' bid.product.id %}">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-danger">Delete</button>
+          </form>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% else %}
+  <p>
+    You haven't placed any bids yet. Start bidding on exciting products
+    <a href="{% url 'index' %}">here</a>!
+  </p>
+  {% endif %}
+</div>
+{% endblock %}

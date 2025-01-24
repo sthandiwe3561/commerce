@@ -105,3 +105,60 @@ h2 {
 .comment-section li {
   margin-bottom: 10px;
 }
+
+/* my_bids page */
+.container h1 {
+  text-align: center;
+  color: #333;
+}
+
+.container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+  font-family: Arial, sans-serif;
+}
+
+.bids-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+.bids-table th,
+.bids-table td {
+  padding: 10px;
+  border: 1px solid #ccc;
+  text-align: left;
+}
+
+.bids-table th {
+  background-color: #f4f4f4;
+}
+
+.status {
+  padding: 5px 10px;
+  border-radius: 5px;
+  color: #fff;
+  font-weight: bold;
+}
+
+.status.winning {
+  background-color: #28a745; /* Green */
+}
+
+.status.outbid {
+  background-color: #dc3545; /* Red */
+}
+
+.btn-view {
+  padding: 5px 10px;
+  background-color: #007bff;
+  color: #fff;
+  text-decoration: none;
+  border-radius: 5px;
+}
+
+.btn-view:hover {
+  background-color: #0056b3;
+}
