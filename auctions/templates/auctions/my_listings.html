@@ -15,16 +15,6 @@
         <p class="description">{{ listing.description|truncatechars:100 }}</p>
         <p class="price">Current Price: ${{ listing.current_price }}</p>
         <p class="status">Status:</p>
-        <div class="actions">
-          {% if listing.is_active %}
-          <form action="#" method="post">
-            {% csrf_token %}
-            <button type="submit" class="btn btn-close">Close Listing</button>
-          </form>
-          {% else %}
-          <span class="closed-msg">This listing is closed.</span>
-          {% endif %}
-        </div>
       </div>
     </div>
     {% endfor %}

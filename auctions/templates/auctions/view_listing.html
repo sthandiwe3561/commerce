@@ -33,12 +33,16 @@
       />
       <button type="submit">Place Bid</button>
     </form>
-
     {% else %}
     <p>You must be logged in to place a bid.</p>
     {% endif %}
+
     <a href="#" class="btn btn-primary">Add to Watchlist</a>
-    {% if messages %}
+    {% if user.is_authenticated %} {% if request.user == product.user %}
+    <a href="{% url 'close_listing' product.id %}" class="btn btn-danger"
+      >Close Listing</a
+    >
+    {% endif %} {% endif %} {% if messages %}
     <ul>
       {% for message in messages %}
       <li class="{% if message.tags %}{{ message.tags }}{% endif %}">
@@ -67,5 +71,5 @@
     <p>You must be logged in to comment.</p>
     {% endif %}
   </div>
-  {% endblock %}
 </div>
+{% endblock %}

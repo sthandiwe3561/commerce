@@ -136,7 +136,7 @@ h2 {
 .second-column img {
   width: 80%; /* Make the image fit the column */
   height: 95%; /* Full height of 4 rows */
-  object-fit: cover; /* Ensure the image covers the space without distortion */
+  object-fit: contain; /* Ensure the image covers the space without distortion */
   background-color: white;
 }
 
@@ -227,21 +227,6 @@ h2 {
 
 .bids-table th {
   background-color: #f4f4f4;
-}
-
-.status {
-  padding: 5px 10px;
-  border-radius: 5px;
-  color: #fff;
-  font-weight: bold;
-}
-
-.status.winning {
-  background-color: #28a745; /* Green */
-}
-
-.status.outbid {
-  background-color: #dc3545; /* Red */
 }
 
 .btn-view {

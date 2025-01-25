@@ -43,3 +43,15 @@ def comments(request, product_id):
  
     path("product/<int:product_id>/comments/", views.comments, name="comments"),
     <a href="{% url 'comments' product.id %}">Comments</a>
+
+
+     <div class="actions">
+          {% if listing.is_active %}
+          <form action="#" method="post">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-close">Close Listing</button>
+          </form>
+          {% else %}
+          <span class="closed-msg">This listing is closed.</span>
+          {% endif %}
+        </div>

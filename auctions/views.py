@@ -1,6 +1,6 @@
 from django.contrib.auth import authenticate, login, logout
 from django.db import IntegrityError
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect, HttpResponseForbidden
 from django.shortcuts import render, get_object_or_404,redirect
 from django.contrib import messages
 from django.urls import reverse
@@ -202,3 +202,19 @@ def my_listings(request):
     return render(request,"auctions/my_listings.html", {
         "listings":listings
     })
+
+def close_listing(request,product_id):
+    product = get_object_or_404(Product, id=product_id)
+    user_bid = Bid.objects.filter(user=request.user, product=product).get()
+
+      # Check if the logged-in user is the creator of the listing
+    if request.user != product.user:
+        return HttpResponseForbidden("You are not allowed to close this listing.")
+    
+
+    if user_bid:
+        user_bid.status = "Winner"
+        user_bid.save()
+
+
+    return redirect(index)
