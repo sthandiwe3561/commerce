@@ -36,3 +36,14 @@ class Bid(models.Model):
 
     def __str__(self):
         return f"{self.user.username} - {self.amount}"
+
+class Watchlist(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    added_on = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        unique_together = ('user', 'product')  # Ensure each user can only add a product once to the watchlist.
+
+    def __str__(self):
+        return f'{self.user.username} is watching {self.product.name}'

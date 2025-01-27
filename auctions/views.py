@@ -1,6 +1,6 @@
 from django.contrib.auth import authenticate, login, logout
 from django.db import IntegrityError
-from django.http import HttpResponse, HttpResponseRedirect, HttpResponseForbidden
+from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404,redirect
 from django.contrib import messages
 from django.urls import reverse
@@ -9,7 +9,7 @@ from .models import User,Product,Comment,Bid
 
 
 def index(request):
-    product = Product.objects.all()
+    product = Product.objects.filter(is_active=True)
     return render(request, "auctions/index.html",{
         "products": product
     })
@@ -185,6 +185,10 @@ def my_bids(request):
     bids_with_status = []
     for bid in user_bids:
         statuses = "Winning" if bid.amount == bid.product.current_price else "Outbid"
+
+        # Check if the product is not active and if the user's bid is the same as when they placed it
+        if not bid.product.is_active and bid.amount == bid.product.current_price:
+             statuses = "Winner"  
         bid.status = statuses
         bid.save()
         bids_with_status.append({
@@ -198,23 +202,19 @@ def my_bids(request):
     })
 
 def my_listings(request):
-    listings = Product.objects.filter(user=request.user)
+    listings = Product.objects.filter(user=request.user, is_active= True)
     return render(request,"auctions/my_listings.html", {
         "listings":listings
     })
 
+
 def close_listing(request,product_id):
-    product = get_object_or_404(Product, id=product_id)
-    user_bid = Bid.objects.filter(user=request.user, product=product).get()
-
-      # Check if the logged-in user is the creator of the listing
-    if request.user != product.user:
-        return HttpResponseForbidden("You are not allowed to close this listing.")
+    product = get_object_or_404(Product, pk=product_id)
+    products = Product.objects.filter(is_active=True)
     
+    product.is_active = False
+    product.save()
 
-    if user_bid:
-        user_bid.status = "Winner"
-        user_bid.save()
-
-
-    return redirect(index)
+    return render(request,"auctions/index.html", {
+        "products":products,
+    })
