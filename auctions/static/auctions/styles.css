@@ -159,44 +159,94 @@ h2 {
   margin-left: 10px;
 }
 
-.comment-section {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin: 20px auto;
-  width: 50%; /* Adjust width as needed */
-  text-align: center; /* Center align the text */
-}
-
-.comment-section form {
-  width: 100%; /* Make the form take full width of its container */
-  margin-bottom: 20px; /* Add spacing between form and comments */
-}
-
-.comment-section textarea {
-  width: 100%;
+/* General styles for the comments section */
+.comments-section {
+  margin-top: 20px;
   padding: 10px;
-  margin-bottom: 10px;
+  background-color: #f8f9fa;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+}
+
+/* Individual comment styles */
+.comment {
+  margin-bottom: 15px;
+  padding: 10px;
+  background-color: #ffffff;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.comment-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.comment-header strong {
+  font-size: 1rem;
+  color: #333;
+}
+
+.comment-header .comment-date {
+  font-size: 0.85rem;
+  color: #888;
+}
+
+.comment-body p {
+  margin: 0;
+  font-size: 0.95rem;
+  color: #555;
+  line-height: 1.5;
+}
+
+/* Comment form styles */
+form {
+  margin-top: 20px;
+  padding: 15px;
+  background-color: #ffffff;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+form textarea {
+  width: 100%;
   border: 1px solid #ccc;
-  border-radius: 5px;
-}
-
-.comment-section button {
-  padding: 10px 20px;
-  background-color: #007bff;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-}
-
-.comment-section ul {
-  list-style-type: none;
-  padding: 0;
-}
-
-.comment-section li {
+  border-radius: 8px;
+  padding: 10px;
+  font-size: 0.95rem;
+  resize: none;
   margin-bottom: 10px;
+  box-sizing: border-box;
+}
+
+form textarea:focus {
+  border-color: #007bff;
+  outline: none;
+}
+
+form button {
+  background-color: #007bff;
+  color: #ffffff;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+form button:hover {
+  background-color: #0056b3;
+}
+
+/* Message for unauthenticated users */
+p {
+  font-size: 0.95rem;
+  color: #555;
 }
 
 /* my_bids page */

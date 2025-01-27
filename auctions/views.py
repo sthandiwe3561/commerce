@@ -5,13 +5,24 @@ from django.shortcuts import render, get_object_or_404,redirect
 from django.contrib import messages
 from django.urls import reverse
 
-from .models import User,Product,Comment,Bid
+from .models import User,Product,Comment,Bid,Watchlist
 
 
 def index(request):
-    product = Product.objects.filter(is_active=True)
+     # Define your category list
+    categories = ["Electronics", "Clothing", "Books", "Home & Garden", "Sports", "Toys"]
+
+    # Get the selected category from the query parameters
+    selected_category = request.GET.get('category')
+     # Filter products based on the selected category
+    if selected_category and selected_category in categories:
+        product = Product.objects.filter(category=selected_category,is_active=True)
+    else:
+        product = Product.objects.filter(is_active=True)
     return render(request, "auctions/index.html",{
-        "products": product
+        "products": product,
+        "categories": categories,
+        "selected_category": selected_category,
     })
 
 
@@ -94,8 +105,11 @@ def add_listing(request):
 
 def view_listing(request,product_id):
     product = get_object_or_404(Product, id=product_id)
+    comments = product.comments.all()  # Fetch all comments for this product
+
     return render(request, "auctions/view_listing.html",{
-        "product": product
+        "product": product,
+        "comments": comments
     })
 
 def comments(request, product_id):
@@ -109,16 +123,10 @@ def comments(request, product_id):
             content=content
         )
         comment.save()
-        return redirect('view_listing', product_id=product.id)
-    print(product)
-    comments = product.comments.all()  # Fetch comments using the related_name
 
-    #comments = Comment.objects.filter(product=product)
-    print("context", comments)
-    return render(request, "auctions/index.html",{
-        "product": product,
-        "comments": comments,
-    })
+        return redirect('view_listing', product_id=product.id)
+
+    
 
 def bid(request,product_id):
      product = get_object_or_404(Product, id=product_id)
@@ -203,18 +211,48 @@ def my_bids(request):
 
 def my_listings(request):
     listings = Product.objects.filter(user=request.user, is_active= True)
+
     return render(request,"auctions/my_listings.html", {
-        "listings":listings
+        "listings":listings,
     })
 
 
 def close_listing(request,product_id):
     product = get_object_or_404(Product, pk=product_id)
-    products = Product.objects.filter(is_active=True)
+    products = Product.objects.filter(user=request.user,is_active=True)
     
     product.is_active = False
     product.save()
 
-    return render(request,"auctions/index.html", {
-        "products":products,
+    return render(request,"auctions/my_listings.html", {
+        "listings":products,
     })
+
+def add_watchlist(request,product_id):
+    product =get_object_or_404(Product,id=product_id)
+    #save the changes
+     # Check if the product is already in the user's watchlist
+    if Watchlist.objects.filter(user=request.user, product=product).exists():
+        messages.info(request, "This product is already in your watchlist.")
+    else:
+        try:
+            # Add to watchlist
+            new_watchlist = Watchlist.objects.create(
+                user=request.user,
+                product=product,
+            )
+            new_watchlist.save()
+            messages.success(request, "Product added to your watchlist.")
+        except IntegrityError:
+            messages.error(request, "An error occurred while adding the product to your watchlist.")
+   
+    return redirect("watchlist")
+
+def watchlist(request):
+     # Get the watchlist items for the logged-in user
+    watchlist_items = Watchlist.objects.filter(user=request.user)
+
+    return render(request,"auctions/watchlist.html",{
+        "watchlist_items": watchlist_items
+    })
+

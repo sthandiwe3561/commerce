@@ -1,0 +1,24 @@
+{% extends 'auctions/layout.html' %} {% block body %}
+<h2>Your Watchlist</h2>
+{% if watchlist_items %}
+<ul>
+  {% for item in watchlist_items %}
+  <li>
+    {% if not item.product.is_active %}
+    <span class="closed-product">Closed</span>
+    <!-- Show "Closed" for inactive products -->
+    {% endif %}
+
+    <a href="{% url 'view_listing' item.product.id %}">
+      {{ item.product.name }}
+    </a>
+    -R{{item.product.current_price}} {% if not item.product.is_active %}
+    <p>{{item.product.name}} Is no longer available.</p>
+    <!-- Optional message for closed products -->
+    {% endif %}
+  </li>
+  {% endfor %}
+</ul>
+{% else %}
+<p>Your watchlist is empty.</p>
+{% endif %} {% endblock %}

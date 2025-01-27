@@ -14,7 +14,11 @@
         <h2>{{ listing.title }}</h2>
         <p class="description">{{ listing.description|truncatechars:100 }}</p>
         <p class="price">Current Price: ${{ listing.current_price }}</p>
-        <p class="status">Status:</p>
+        {% if user.is_authenticated %} {% if request.user == listing.user %}
+        <a href="{% url 'close_listing' listing.id %}" class="btn btn-danger"
+          >Close Listing</a
+        >
+        {% endif %} {% endif %}
       </div>
     </div>
     {% endfor %}

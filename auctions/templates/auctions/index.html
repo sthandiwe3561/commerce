@@ -8,6 +8,18 @@
 {% else %}
 <div class="index-container">
   <h2>Active Listings</h2>
+  <!-- Category Filter -->
+  <form method="GET" action="" class="category-filter-form">
+    <label for="category-select">Filter by Category:</label>
+    <select id="category-select" name="category" onchange="this.form.submit()" class="form-select">
+      <option value="" {% if not selected_category %}selected{% endif %}>All Categories</option>
+      {% for category in categories %}
+      <option value="{{ category }}" {% if selected_category == category %}selected{% endif %}>
+        {{ category }}
+      </option>
+      {% endfor %}
+    </select>
+  </form>
   {% if products %}
   <div class="index-grid">
     {% for product in products %}
@@ -20,14 +32,11 @@
         />
       </div>
       <div class="card-body">
-        <p>{{bid.status}}</p>
-        <p>{{bid.user}}</p>
-        <p>{{bid.amount}}</p>
         <h5 class="card-title">{{product.name}}</h5>
         <p class="card-text">{{product.description}}</p>
         <div class="button-group">
-          <a href="#" class="btn index-btn btn-primary">Bid Now</a>
-          <a href="#" class="btn index-btn btn-primary">Add to Watchlist</a>
+          <a href="{% url 'view_listing' product.id %}" class="btn index-btn btn-primary">Bid Now</a>
+          <a href="{% url 'add_watchlist' product.id %}" class="btn index-btn btn-primary">Add to Watchlist</a>
           <a
             href="{% url 'view_listing' product.id %}"
             class="btn index-btn btn-primary"
