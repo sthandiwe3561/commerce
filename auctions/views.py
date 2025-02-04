@@ -1,4 +1,5 @@
 from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required
 from django.db import IntegrityError
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404,redirect
@@ -248,6 +249,7 @@ def add_watchlist(request,product_id):
    
     return redirect("watchlist")
 
+@login_required(login_url="login")  # Redirects to login page if not logged in
 def watchlist(request):
      # Get the watchlist items for the logged-in user
     watchlist_items = Watchlist.objects.filter(user=request.user)
@@ -256,3 +258,34 @@ def watchlist(request):
         "watchlist_items": watchlist_items
     })
 
+def edit_listing(request,product_id):
+    product = get_object_or_404(Product, pk=product_id)
+    products = Product.objects.filter(user=request.user,is_active=True)
+
+    if request.method == "POST":
+         # Get form data
+        name = request.POST.get("name")
+        description = request.POST.get("description")
+        starting_bid = float(request.POST.get("starting_bid", 0))  # Convert to float
+        image_url = request.POST.get("image_url")
+        category = request.POST.get("category")
+        
+        product.name =name
+        product.description = description
+        product.starting_price = starting_bid
+        product.image_url = image_url
+        product.category = category
+
+        if starting_bid > product.current_price:
+            product.current_price
+        product.save()
+
+        return render(request,"auctions/my_listing.html", {
+            "listings":products
+        }) 
+ 
+    categories = ["Electronics", "Fashion", "Home", "Toys", "Sports"]  # Example categories
+    return render(request,"auctions/add_listing.html",{
+        "product":product,
+        "categories": categories  # Pass categories to the template
+    })

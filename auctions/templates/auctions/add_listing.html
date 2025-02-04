@@ -1,46 +1,64 @@
 {% extends "auctions/layout.html" %} {% block body %}
-<h2>Add Listing</h2>
-<form method="post" action="{% url 'add_listing' %}">
-  {% csrf_token %}
-  <div class="form-group">
-    <label for="name">Product Name</label>
-    <input type="text" class="form-control" id="name" name="name" required />
+<div class="add_listing">
+  <h2>Add Listing</h2>
+  <div class="list">
+    <form method="post" action="{% url 'add_listing' %}">
+      {% csrf_token %}
+      <div class="form-group">
+        <label for="name">Product Name</label>
+        <input
+          type="text"
+          class="form-control"
+          id="name"
+          name="name"
+          value="{{product.name}}"
+          required
+        />
+      </div>
+      <div class="form-group">
+        <label for="description">Description</label>
+        <textarea
+          class="form-control"
+          id="description"
+          name="description"
+          rows="3"
+          value="{{product.description }}"
+          required
+        ></textarea>
+      </div>
+      <div class="form-group">
+        <label for="starting_bid">Starting Bid</label>
+        <input
+          type="number"
+          step="0.01"
+          class="form-control"
+          id="starting_bid"
+          name="starting_bid"
+          value="{{product.starting_price}}"
+          required
+        />
+      </div>
+      <div class="form-group">
+        <label for="image_url">Image URL</label>
+        <input
+          type="url"
+          class="form-control"
+          id="image_url"
+          name="image_url"
+          value="{{product.image_url}}"
+        />
+      </div>
+      <div class="form-group">
+        <label for="category">Product Category</label>
+        <select class="form-control" id="category" name="category" required>
+          <option value="" disabled selected>Select a category</option>
+          {% for category in categories %}
+          <option value="{{ category }}">{{ category }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <button type="submit" class="btn index-btn mt-3">Add Listing</button>
+    </form>
   </div>
-  <div class="form-group">
-    <label for="description">Description</label>
-    <textarea
-      class="form-control"
-      id="description"
-      name="description"
-      rows="3"
-      required
-    ></textarea>
-  </div>
-  <div class="form-group">
-    <label for="starting_bid">Starting Bid</label>
-    <input
-      type="number"
-      step="0.01"
-      class="form-control"
-      id="starting_bid"
-      name="starting_bid"
-      required
-    />
-  </div>
-  <div class="form-group">
-    <label for="image_url">Image URL</label>
-    <input type="url" class="form-control" id="image_url" name="image_url" />
-  </div>
-  <div class="form-group">
-    <label for="category">Product Category</label>
-    <select class="form-control" id="category" name="category" required>
-      <option value="" disabled selected>Select a category</option>
-      {% for category in categories %}
-      <option value="{{ category }}">{{ category }}</option>
-      {% endfor %}
-    </select>
-  </div>
-  <button type="submit" class="btn btn-primary mt-3">Add Listing</button>
-</form>
-
+</div>
 {% endblock %}

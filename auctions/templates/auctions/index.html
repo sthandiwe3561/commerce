@@ -2,14 +2,14 @@
 <!-- Show the slogan content if the user is not logged in -->
 {% if not user.is_authenticated %}
 <div class="slogen">
-  <p>Uncover Hidden Treasures, Bid to Win.</p>
-  <p>Bids That Bring You Deals.</p>
+  <p class="text1"><span>Uncover</span> Hidden Treasures,</p>
+  <p class="text2">Bids That Bring You <span>Deals.</span></p>
 </div>
 {% else %}
 <div class="index-container">
   <h2>Active Listings</h2>
   <!-- Category Filter -->
-  <form method="GET" action="" class="category-filter-form">
+  <form method="GET" action="" class="category-filter-form form">
     <label for="category-select">Filter by Category:</label>
     <select id="category-select" name="category" onchange="this.form.submit()" class="form-select">
       <option value="" {% if not selected_category %}selected{% endif %}>All Categories</option>

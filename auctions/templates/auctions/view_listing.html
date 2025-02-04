@@ -31,17 +31,21 @@
         required
         placeholder="Enter your bid"
       />
-      <button type="submit">Place Bid</button>
+      <button type="submit" class="index-btn">Place Bid</button>
     </form>
     {% else %}
     <p>You must be logged in to place a bid.</p>
     {% endif %}
 
-    <a href="{% url 'add_watchlist' product.id %}" class="btn btn-primary"
+    <a
+      href="{% url 'add_watchlist' product.id %}"
+      class="btn btn-view btn-primary"
       >Add to Watchlist</a
     >
     {% if user.is_authenticated %} {% if request.user == product.user %}
-    <a href="{% url 'close_listing' product.id %}" class="btn btn-danger"
+    <a
+      href="{% url 'close_listing' product.id %}"
+      class="btn btn-view btn-danger"
       >Close Listing</a
     >
     {% endif %} {% endif %} {% if messages %}
@@ -54,40 +58,35 @@
     </ul>
     {% endif %}
   </div>
-
-  <!-- Comment Form (Visible only for logged-in users) -->
-    {% if user.is_authenticated %}
-  <h2>Comments</h2>  
-    <div class="comments-section">
-      {% for comment in comments %}
-      <div class="comment">
-        <div class="comment-header">
-          <strong>{{ comment.user.username }}</strong>
-          <span class="comment-date"
-            >{{ comment.timestamp }}</span
-          >
-        </div>
-        <div class="comment-body">
-          <p>{{ comment.content }}</p>
-        </div>
-      </div>
-      {% empty %}
-      <p>No comments yet for this product.</p>
-      {% endfor %}
+</div>
+<!-- Comment Form (Visible only for logged-in users) -->
+{% if user.is_authenticated %}
+<h2>Comments</h2>
+<div class="comments-section">
+  <form method="POST" action="{% url 'comments' product.id %}" class="form">
+    {% csrf_token %}
+    <textarea
+      name="content"
+      rows="2"
+      placeholder="Add a comment..."
+      required
+    ></textarea>
+    <button type="submit" class="index-btn">Submit</button>
+  </form>
+  {% for comment in comments %}
+  <div class="comment">
+    <div class="comment-header">
+      <strong>{{ comment.user.username }}</strong>
+      <span class="comment-date">{{ comment.timestamp }}</span>
     </div>
-    <form method="POST" action="{% url 'comments' product.id %}">
-      {% csrf_token %}
-      <textarea
-        name="content"
-        rows="2"
-        placeholder="Add a comment..."
-        required
-      ></textarea>
-      <button type="submit">Submit</button>
-    </form>
-    {% else %}
-    <p>You must be logged in to comment.</p>
-    {% endif %}
+    <div class="comment-body">
+      <p>{{ comment.content }}</p>
+    </div>
   </div>
+  {% empty %}
+  <p>No comments yet for this product.</p>
+  {% endfor %} {% else %}
+  <p>You must be logged in to comment.</p>
+  {% endif %}
 </div>
 {% endblock %}
