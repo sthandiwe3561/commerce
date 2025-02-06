@@ -18,4 +18,8 @@ urlpatterns = [
     path("product/<int:product_id>/add_watchlist/", views.add_watchlist, name="add_watchlist"),
     path("watchlist", views.watchlist,name="watchlist"),
     path("product/<int:product_id>/edit_listing/", views.edit_listing, name="edit_listing"),
+    path("product/<int:comment_id>/edit_comments/", views.edit_comments, name="edit_comments"),
+    path("product/<int:comment_id>/delete_comments/", views.delete_comments, name="delete_comments"),
+
+
 ]

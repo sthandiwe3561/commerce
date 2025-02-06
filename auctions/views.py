@@ -116,16 +116,23 @@ def view_listing(request,product_id):
 def comments(request, product_id):
     product = get_object_or_404(Product, id=product_id)
     
-    if request.method == 'POST':
-        content = request.POST['content']
-        comment = Comment.objects.create(
-            user=request.user,
-            product=product,
-            content=content
-        )
-        comment.save()
+    if request.method == "POST":
+        content = request.POST["content"]
 
-        return redirect('view_listing', product_id=product.id)
+        # Check if the user already has a comment on this product
+        existing_comment = Comment.objects.filter(user=request.user, product=product).first()
+        
+        if existing_comment:
+            existing_comment.content = content  # Update the existing comment
+            existing_comment.save()
+        else:
+            Comment.objects.create(
+                user=request.user,
+                product=product,
+                content=content
+            )
+
+        return redirect("view_listing", product_id=product.id)
 
     
 
@@ -289,3 +296,38 @@ def edit_listing(request,product_id):
         "product":product,
         "categories": categories  # Pass categories to the template
     })
+
+def edit_comments(request,comment_id):
+    commentt = get_object_or_404(Comment, id=comment_id)
+    product = get_object_or_404(Product, id=commentt.product.id, is_active=True)  # Get single product
+    
+    # Fetch all comments related to the product
+    comments = Comment.objects.filter(product=product)  
+
+    if request.method == "POST":
+        comment = request.POST.get("content")
+        if comment:  
+            commentt.content = comment  # Update the comment content
+            commentt.save()  # Save changes
+            return redirect("view_listing", product_id=product.id)  # Redirect back to the product page
+
+    return render(request,"auctions/view_listing.html",{
+        "comment":commentt,
+        "product":product,
+        "comments":comments
+
+    })
+
+def delete_comments(request, comment_id):
+    # Get the comment or return 404 if not found
+    comment = get_object_or_404(Comment, id=comment_id)
+
+    # Get the associated product
+    product = comment.product  # No need to check `is_active=True`
+
+    # Delete the comment
+    comment.delete()
+
+    # Redirect to the correct product page
+    return redirect("view_listing", product_id=product.id)  
+

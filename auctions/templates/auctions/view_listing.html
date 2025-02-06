@@ -65,12 +65,9 @@
 <div class="comments-section">
   <form method="POST" action="{% url 'comments' product.id %}" class="form">
     {% csrf_token %}
-    <textarea
-      name="content"
-      rows="2"
-      placeholder="Add a comment..."
-      required
-    ></textarea>
+    <textarea name="content" rows="2" placeholder="Add a comment..." required>
+{{comment.content }}</textarea
+    >
     <button type="submit" class="index-btn">Submit</button>
   </form>
   {% for comment in comments %}
@@ -82,6 +79,16 @@
     <div class="comment-body">
       <p>{{ comment.content }}</p>
     </div>
+    {% if user.is_authenticated %} {% if request.user == comment.user %}
+    <div class="c_buttons">
+      <a href="{% url 'edit_comments' comment.id %}" class="btn index-btn"
+        >Edit</a
+      >
+      <a href="{% url 'delete_comments' comment.id %}" class="btn btn-danger"
+        >Delete</a
+      >
+    </div>
+    {% endif %} {% endif %}
   </div>
   {% empty %}
   <p>No comments yet for this product.</p>

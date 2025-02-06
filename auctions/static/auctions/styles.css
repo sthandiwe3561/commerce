@@ -134,6 +134,9 @@ h2 {
   font-size: 16px;
   color: white;
 }
+.info-text .login p {
+  margin-left: 30px;
+}
 
 /* layout page*/
 .text1 {
