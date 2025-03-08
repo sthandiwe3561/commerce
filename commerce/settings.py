@@ -26,7 +26,7 @@ SECRET_KEY = os.getenv("DJANGO_SECRET_KEY", "default-secret-key")
 DEBUG = os.getenv("DEBUG", "False") == "True"
 
 # Read ALLOWED_HOSTS from environment, default to localhost
-ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "localhost").split(",")
+ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "localhost,commerce.onrender.com").split(",")
 
 
 # Quick-start development settings - unsuitable for production
@@ -38,7 +38,7 @@ ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "localhost").split(",")
 # SECURITY WARNING: don't run with debug turned on in production!
 #DEBUG = True
 
-
+#ALLOWED_HOSTS = []
 
 # Application definition
 
