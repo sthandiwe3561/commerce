@@ -38,7 +38,6 @@ ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "localhost").split(",")
 # SECURITY WARNING: don't run with debug turned on in production!
 #DEBUG = True
 
-#ALLOWED_HOSTS = []
 
 
 # Application definition
