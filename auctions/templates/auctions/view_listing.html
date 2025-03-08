@@ -63,13 +63,20 @@
 {% if user.is_authenticated %}
 <h2>Comments</h2>
 <div class="comments-section">
+  {% if comment %}  
+  <!-- If editing an existing comment -->
+  <form method="POST" action="{% url 'edit_comments' comment.id %}" class="form">
+{% else %}
+  <!-- If adding a new comment -->
   <form method="POST" action="{% url 'comments' product.id %}" class="form">
+{% endif %}
     {% csrf_token %}
-    <textarea name="content" rows="2" placeholder="Add a comment..." required>
-{{comment.content }}</textarea
-    >
-    <button type="submit" class="index-btn">Submit</button>
-  </form>
+    <textarea name="content" rows="2" placeholder="Add a comment..." required>{{ comment.content }}</textarea>
+    <button type="submit" class="index-btn">
+      {% if comment %} Update {% else %} Submit {% endif %}
+    </button>
+</form>
+
   {% for comment in comments %}
   <div class="comment">
     <div class="comment-header">
@@ -79,7 +86,7 @@
     <div class="comment-body">
       <p>{{ comment.content }}</p>
     </div>
-    {% if user.is_authenticated %} {% if request.user == comment.user %}
+    {% if user.is_authenticated and request.user == comment.user %}
     <div class="c_buttons">
       <a href="{% url 'edit_comments' comment.id %}" class="btn index-btn"
         >Edit</a
@@ -88,7 +95,7 @@
         >Delete</a
       >
     </div>
-    {% endif %} {% endif %}
+    {% endif %}
   </div>
   {% empty %}
   <p>No comments yet for this product.</p>

@@ -119,14 +119,8 @@ def comments(request, product_id):
     if request.method == "POST":
         content = request.POST["content"]
 
-        # Check if the user already has a comment on this product
-        existing_comment = Comment.objects.filter(user=request.user, product=product).first()
-        
-        if existing_comment:
-            existing_comment.content = content  # Update the existing comment
-            existing_comment.save()
-        else:
-            Comment.objects.create(
+      
+        Comment.objects.create(
                 user=request.user,
                 product=product,
                 content=content
