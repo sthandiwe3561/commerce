@@ -17,17 +17,9 @@ from pathlib import Path
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-BASE_DIR = Path(__file__).resolve().parent.parent  # Correct way
 
 #Use the secret key from environment variables, with a default (not recommended for production)
 SECRET_KEY = os.getenv("DJANGO_SECRET_KEY", "default-secret-key")
-
-# Read DEBUG from environment (convert string to boolean)
-DEBUG = os.getenv("DEBUG", "False") == "True"
-
-# Read ALLOWED_HOSTS from environment, default to localhost
-ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "localhost,commerce.onrender.com").split(",")
-
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
@@ -36,9 +28,9 @@ ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "localhost,commerce.onrender.com").sp
 #SECRET_KEY = '6ps8j!crjgrxt34cqbqn7x&b3y%(fny8k8nh21+qa)%ws3fh!q'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-#DEBUG = True
+DEBUG = True
 
-#ALLOWED_HOSTS = []
+ALLOWED_HOSTS = []
 
 # Application definition
 
